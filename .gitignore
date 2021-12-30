@@ -1,0 +1,4 @@
+*.disk
+*.pyc
+.DS_Store
+netkit
