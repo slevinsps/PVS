@@ -1,0 +1,29 @@
+graph G {
+edge [len=1.5];
+node [shape=diamond, color="green"];
+r1;
+r2;
+s11;
+s12;
+ws11;
+ws12;
+ws13;
+ws21;
+node [shape=ellipse, color="brown"];
+lan1 [label="10.10.0.0/16"];
+lan2 [label="10.20.0.0/16"];
+lan1 [label="10.10.0.0/16"];
+lan1 [label="10.10.0.0/16"];
+lan1 [label="10.10.0.0/16"];
+lan1 [label="10.10.0.0/16"];
+lan1 [label="10.10.0.0/16"];
+lan2 [label="10.20.0.0/16"];
+r1 -- lan1 [label="eth0: 10.10.0.1", color="gray"];
+r2 -- lan2 [label="eth0: 10.20.0.1", color="gray"];
+s11 -- lan1 [label="eth0: 10.10.0.0/16", color="gray"];
+s12 -- lan1 [label="eth0: 10.10.0.0/16", color="gray"];
+ws11 -- lan1 [label="eth0: 10.10.0.0/16", color="gray"];
+ws12 -- lan1 [label="eth0: 10.10.0.0/16", color="gray"];
+ws13 -- lan1 [label="eth0: 10.10.0.0/16", color="gray"];
+ws21 -- lan2 [label="eth0: 10.20.0.0/16", color="gray"];
+}

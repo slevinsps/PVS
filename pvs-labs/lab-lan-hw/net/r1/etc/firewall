@@ -1,0 +1,30 @@
+#!/bin/sh
+LAN=eth0
+INET=eth1
+VPN=tun0
+# Удаление всех правил в таблице "filter" (по-умолчанию).
+iptables -F
+# Удаление правил в таблице "nat" (её надо указать явно).
+iptables -F -t nat
+# По-умолчанию все маршрутизируемые пакеты выбрасываются.
+iptables --policy FORWARD DROP
+# ICMP разрешим
+iptables -A FORWARD -p icmp -j ACCEPT
+# Разрешаем любую маршрутизацию для интерфейса VPN
+iptables -A FORWARD -i $VPN -j ACCEPT
+iptables -A FORWARD -o $VPN -j ACCEPT
+# Включение SNAT для маршрутизируемых пакетов, выходящих
+# через eth1. Это правило выполняется после самой маршрутизации
+# (POSTROUTING) и помещается в таблицу правил "nat".
+iptables -t nat -A POSTROUTING -o $INET -j MASQUERADE
+# Разрешение пакетов-ответов (они отслеживаются как
+# -- state ESTABLISHED)
+iptables -A FORWARD -m state --state ESTABLISHED -i $INET -j ACCEPT
+
+iptables -A FORWARD -s 10.10.4.10 -p tcp --dport 80 -j ACCEPT
+iptables -A FORWARD -s 10.10.4.20 -j ACCEPT
+
+
+iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to 10.10.4.10:80 -i $INET
+iptables -A FORWARD -d 10.10.4.10 -p tcp --dport 80 -j ACCEPT
+iptables -A FORWARD -s 10.10.4.10 -p tcp --sport 80 -o $INET -j ACCEPT

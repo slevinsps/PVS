@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage[x11names, rgb]{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usetikzlibrary{snakes,arrows,shapes}
+\usepackage{amsmath}
+%
+%
+
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{0pt}%
+
+%
+
+\begin{document}
+\pagestyle{empty}
+%
+%
+%
+
+\enlargethispage{100cm}
+% Start of code
+\begin{tikzpicture}[>=latex',line join=bevel,]
+%%
+\node (r4) at (891.91bp,165.45bp) [draw=blue,diamond] {r4};
+  \node (ws2) at (47.39bp,19.14bp) [draw=green,diamond] {ws2};
+  \node (r1) at (473.92bp,86.403bp) [draw=blue,diamond] {r1};
+  \node (r2) at (679.85bp,167.13bp) [draw=blue,diamond] {r2};
+  \node (r3) at (264.33bp,27.292bp) [draw=blue,diamond] {r3};
+  \node (ws3) at (1103.2bp,99.171bp) [draw=green,diamond] {ws3};
+  \node (ws1) at (793.11bp,339.75bp) [draw=green,diamond] {ws1};
+  \node (lan5) at (997.71bp,129.15bp) [draw=brown,ellipse] {192.168.5.0/24};
+  \node (lan4) at (156.06bp,15.932bp) [draw=brown,ellipse] {192.168.4.0/24};
+  \node (lan3) at (785.7bp,218.36bp) [draw=brown,ellipse] {192.168.3.0/24};
+  \node (lan2) at (370.81bp,50.471bp) [draw=brown,ellipse] {192.168.2.0/24};
+  \node (lan1) at (576.84bp,124.51bp) [draw=brown,ellipse] {192.168.1.0/24};
+  \draw [gray,] (r3) ..controls (290.42bp,32.971bp) and (313.72bp,38.045bp)  .. (lan2);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (348.12bp,27.171bp) node {eth0: 192.168.2.2};
+  \draw [gray,] (ws2) ..controls (76.669bp,18.275bp) and (91.912bp,17.825bp)  .. (lan4);
+  \draw (43bp,9bp) node {eth0: 192.168.4.2};
+  \draw [gray,] (ws3) ..controls (1073.9bp,107.5bp) and (1049.6bp,114.4bp)  .. (lan5);
+  \draw (1016.4bp,102.61bp) node {eth0: 192.168.5.2};
+  \draw [gray,] (r3) ..controls (238.74bp,24.608bp) and (219.69bp,22.609bp)  .. (lan4);
+  \draw (183.46bp,32.319bp) node {eth1: 192.168.4.1};
+  \draw [gray,] (ws1) ..controls (790.55bp,297.78bp) and (787.78bp,252.38bp)  .. (lan3);
+  \draw (746.25bp,285.62bp) node {eth0: 192.168.3.2};
+  \draw [gray,] (r4) ..controls (865.27bp,178.72bp) and (830.44bp,196.08bp)  .. (lan3);
+  \draw (801.84bp,197.9bp) node {eth0: 192.168.3.3};
+  \draw [gray,] (r4) ..controls (918.25bp,156.41bp) and (946.94bp,146.57bp)  .. (lan5);
+  \draw (892.79bp,141.39bp) node {eth1: 192.168.5.1};
+  \draw [gray,] (r2) ..controls (706.77bp,180.16bp) and (740.64bp,196.55bp)  .. (lan3);
+  \draw (683.62bp,198.77bp) node {eth0: 192.168.3.1};
+  \draw [gray,] (r1) ..controls (447.82bp,77.307bp) and (420.28bp,67.71bp)  .. (lan2);
+  \draw (388.06bp,80.466bp) node {eth1: 192.168.2.1};
+  \draw [gray,] (r2) ..controls (653.49bp,156.22bp) and (623.56bp,143.84bp)  .. (lan1);
+  \draw (592.62bp,157.83bp) node {eth1: 192.168.1.2};
+  \draw [gray,] (r1) ..controls (499.75bp,95.965bp) and (528.22bp,106.51bp)  .. (lan1);
+  \draw (474.04bp,111.37bp) node {eth0: 192.168.1.1};
+%
+\end{tikzpicture}
+% End of code
+
+%
+\end{document}
+%
+
+
+

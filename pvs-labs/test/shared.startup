@@ -1,0 +1,5 @@
+# this shell script is executed on every VM at startup,
+# BEFORE <vm_name>.startup.
+
+# apply the /etc/network/interfaces configuration
+/etc/init.d/networking restart

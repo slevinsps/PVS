@@ -1,0 +1,464 @@
+\documentclass[a4paper,12pt]{article}
+
+\input{header.tex}
+
+\title{Отчёт по лабораторной работе \\ <<Динамическая IP-маршрутизация>>}
+\author{(Здесь писать Ф.~И.~О)}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Настройка сети}
+
+\subsection{Топология сети}
+
+Топология сети и используемые IP-адреса показаны на рисунке~\ref{fig:network}.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.8\textwidth]{includes/network_gv.pdf}
+\caption{Топология сети}
+\label{fig:network}
+\end{figure}
+\newpage
+
+Перечень узлов, на которых используется динамическая IP-маршрутизация: r1, r2, r3, r4, r5.
+
+
+\subsection{Назначение IP-адресов}
+
+Ниже приведён файл сетевой настройки  маршрутизатора r1.
+
+\begin{Verbatim}
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet static
+address 10.10.2.2
+netmask 255.255.255.0
+
+auto eth1
+iface eth1 inet static
+address 10.10.4.1
+netmask 255.255.255.0
+
+auto eth2
+iface eth2 inet static
+address 10.10.1.2
+netmask 255.255.255.0
+
+\end{Verbatim}
+
+Ниже приведён файл сетевой настройки  маршрутизатора r2.
+
+\begin{Verbatim}
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet static
+address 10.10.4.2
+netmask 255.255.255.0
+
+auto eth1
+iface eth1 inet static
+address 10.10.5.3
+netmask 255.255.255.0
+\end{Verbatim}
+
+Ниже приведён файл сетевой настройки  маршрутизатора r3.
+
+\begin{Verbatim}
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet static
+address 10.10.3.2
+netmask 255.255.255.0
+
+auto eth1
+iface eth1 inet static
+address 10.10.5.2
+netmask 255.255.255.0
+
+
+\end{Verbatim}
+
+Ниже приведён файл сетевой настройки  маршрутизатора r4.
+
+\begin{Verbatim}
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet static
+address 10.10.2.1
+netmask 255.255.255.0
+
+auto eth1
+iface eth1 inet static
+address 10.10.3.1
+netmask 255.255.255.0
+
+auto eth2
+iface eth2 inet static
+address 10.10.1.1
+netmask 255.255.255.0
+
+\end{Verbatim}
+
+Ниже приведён файл сетевой настройки  маршрутизатора r5.
+
+\begin{Verbatim}
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet static
+address 10.10.5.1
+netmask 255.255.255.0
+
+auto eth1
+iface eth1 inet static
+address 10.10.6.2
+netmask 255.255.255.0
+
+\end{Verbatim}
+
+
+
+Ниже приведён файл сетевой настройки рабочей станции ws2.
+
+\begin{Verbatim}
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet static
+address 10.10.6.1
+netmask 255.255.255.0
+gateway 10.10.6.2
+
+\end{Verbatim}
+
+Ниже приведён файл сетевой настройки рабочей станции wsp1.
+
+\begin{Verbatim}
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet static
+address 10.10.1.1
+netmask 255.255.255.0
+
+\end{Verbatim}
+
+
+\subsection{Настройка протокола RIP}
+
+Ниже приведен файл \Code{/etc/quagga/ripd.conf} маршрутизатора r1.
+
+\begin{Verbatim}
+router rip
+
+network eth0
+network eth1
+network eth2
+
+timers basic 10 60 120
+
+redistribute kernel
+redistribute connected
+
+log file /var/log/quagga/ripd.log
+
+\end{Verbatim}
+
+Ниже приведен файл \Code{/etc/quagga/ripd.conf} маршрутизатора r2.
+
+\begin{Verbatim}
+router rip
+
+network eth0
+network eth1
+
+timers basic 10 60 120
+
+redistribute kernel
+! redistribute connected
+
+log file /var/log/quagga/ripd.log
+
+\end{Verbatim}
+
+Ниже приведен файл \Code{/etc/quagga/ripd.conf} маршрутизатора r3.
+
+\begin{Verbatim}
+router rip
+
+network eth0
+network eth1
+
+timers basic 10 60 120
+
+redistribute kernel
+redistribute connected
+
+log file /var/log/quagga/ripd.log
+
+\end{Verbatim}
+
+Ниже приведен файл \Code{/etc/quagga/ripd.conf} маршрутизатора r4.
+
+\begin{Verbatim}
+router rip
+
+network eth0
+network eth1
+network eth2
+
+timers basic 10 60 120
+
+
+redistribute kernel
+redistribute connected
+
+log file /var/log/quagga/ripd.log
+
+\end{Verbatim}
+
+Ниже приведен файл \Code{/etc/quagga/ripd.conf} маршрутизатора r5.
+
+\begin{Verbatim}
+router rip
+
+network eth0
+
+timers basic 10 60 120
+
+redistribute kernel
+redistribute connected
+
+log file /var/log/quagga/ripd.log
+
+\end{Verbatim}
+
+
+Ниже приведен файл \Code{/etc/quagga/ripd.conf} рабочий станции, связанной с несколькими маршрутизаторами wsp1.
+
+\begin{Verbatim}
+router rip
+
+network eth0
+
+timers basic 10 60 120
+
+redistribute kernel
+redistribute connected
+
+log file /var/log/quagga/ripd.log
+
+\end{Verbatim}
+
+
+\section{Проверка настройки протокола RIP}
+
+Вывод \textbf{traceroute} от узла ws2 до wsp1 при нормальной работе сети.
+
+\begin{Verbatim}
+traceroute to 10.10.1.1 (10.10.1.1), 64 hops max, 40 byte packets
+ 1  10.10.6.2 (10.10.6.2)  7 ms  1 ms  1 ms
+ 2  10.10.5.2 (10.10.5.2)  11 ms  2 ms  1 ms
+ 3  10.10.3.1 (10.10.3.1)  7 ms  1 ms  1 ms
+ 4  10.10.1.1 (10.10.1.1)  13 ms  2 ms  2 ms
+\end{Verbatim}
+
+Вывод \textbf{traceroute} от узла r2 до внешнего IP 87.250.250.242.
+
+\begin{Verbatim}
+traceroute to 87.250.250.242 (87.250.250.242), 64 hops max, 40 byte packets
+ 1  172.16.0.1 (172.16.0.1)  0 ms  0 ms  0 ms
+ 2  172.19.233.1 (172.19.233.1)  2 ms  2 ms  2 ms
+ 3  172.16.3.12 (172.16.3.12)  2 ms  2 ms  2 ms
+ 4  188.72.78.17 (188.72.78.17)  2 ms  1 ms  2 ms
+ 5  83.220.58.221 (83.220.58.221)  2 ms  3 ms  3 ms
+ 6  94.124.192.3 (94.124.192.3)  6 ms  5 ms  4 ms
+ 7  * * *
+ 8  87.250.250.242 (87.250.250.242)  7 ms (TOS=96!) *  6 ms
+ 
+\end{Verbatim}
+
+Вывод сообщения RIP на r3.
+
+\begin{Verbatim}
+IP (tos 0x0, ttl 1, id 0, offset 0, flags [DF], proto UDP (17), length 112) 10.10.3.1.520 > 224.0.0.9.520: 
+	RIPv2, Response, length: 84, routes: 4
+	  AFI: IPv4:         0.0.0.0/0 , tag 0x0000, metric: 3, next-hop: self
+	  AFI: IPv4:       10.10.1.0/24, tag 0x0000, metric: 1, next-hop: self
+	  AFI: IPv4:       10.10.2.0/24, tag 0x0000, metric: 1, next-hop: self
+	  AFI: IPv4:       10.10.4.0/24, tag 0x0000, metric: 2, next-hop: self
+IP (tos 0x0, ttl 1, id 0, offset 0, flags [DF], proto UDP (17), length 112) 10.10.3.2.520 > 224.0.0.9.520: 
+	RIPv2, Response, length: 84, routes: 4
+	  AFI: IPv4:         0.0.0.0/0 , tag 0x0000, metric: 2, next-hop: self
+	  AFI: IPv4:       10.10.4.0/24, tag 0x0000, metric: 2, next-hop: self
+	  AFI: IPv4:       10.10.5.0/24, tag 0x0000, metric: 1, next-hop: self
+	  AFI: IPv4:       10.10.6.0/24, tag 0x0000, metric: 2, next-hop: self
+\end{Verbatim}
+
+Вывод таблицы RIP на r3.
+
+\begin{Verbatim}
+Codes: R - RIP, C - connected, S - Static, O - OSPF, B - BGP
+Sub-codes:
+      (n) - normal, (s) - static, (d) - default, (r) - redistribute,
+      (i) - interface
+
+     Network            Next Hop         Metric From            Tag Time
+R(n) 0.0.0.0/0          10.10.5.3             2 10.10.5.3         0 00:13
+R(n) 10.10.1.0/24       10.10.3.1             2 10.10.3.1         0 00:13
+R(n) 10.10.2.0/24       10.10.3.1             2 10.10.3.1         0 00:13
+C(i) 10.10.3.0/24       0.0.0.0               1 self              0
+R(n) 10.10.4.0/24       10.10.5.3             2 10.10.5.3         0 00:13
+C(i) 10.10.5.0/24       0.0.0.0               1 self              0
+R(n) 10.10.6.0/24       10.10.5.1             2 10.10.5.1         0 00:12
+
+\end{Verbatim}
+
+Вывод таблицы маршрутизации на r3.
+
+\begin{Verbatim}
+10.10.6.0/24 via 10.10.5.1 dev eth1  proto zebra  metric 2 
+10.10.4.0/24 via 10.10.5.3 dev eth1  proto zebra  metric 2 
+10.10.5.0/24 dev eth1  proto kernel  scope link  src 10.10.5.2 
+10.10.2.0/24 via 10.10.3.1 dev eth0  proto zebra  metric 2 
+10.10.3.0/24 dev eth0  proto kernel  scope link  src 10.10.3.2 
+10.10.1.0/24 via 10.10.3.1 dev eth0  proto zebra  metric 2 
+default via 10.10.5.3 dev eth1  proto zebra  metric 2 
+\end{Verbatim}
+
+\section{Расщепленный горизонт и испорченные обратные обновления}
+
+Включенный расщепленный горизонт:
+\begin{Verbatim}
+IP (tos 0x0, ttl 1, id 0, offset 0, flags [DF], proto UDP (17), length 112) 10.10.3.2.520 > 224.0.0.9.520: 
+	RIPv2, Response, length: 84, routes: 4
+	  AFI: IPv4:         0.0.0.0/0 , tag 0x0000, metric: 2, next-hop: self
+	  AFI: IPv4:       10.10.4.0/24, tag 0x0000, metric: 2, next-hop: self
+	  AFI: IPv4:       10.10.5.0/24, tag 0x0000, metric: 1, next-hop: self
+	  AFI: IPv4:       10.10.6.0/24, tag 0x0000, metric: 2, next-hop: self
+\end{Verbatim}
+
+
+Включены испорченные обратные направления:
+\begin{Verbatim}
+
+IP (tos 0x0, ttl 1, id 0, offset 0, flags [DF], proto UDP (17), length 172) 10.10.3.2.520 > 224.0.0.9.520: 
+	RIPv2, Response, length: 144, routes: 7
+	  AFI: IPv4:         0.0.0.0/0 , tag 0x0000, metric: 2, next-hop: self
+	  AFI: IPv4:       10.10.1.0/24, tag 0x0000, metric: 16, next-hop: 10.10.3.1
+	  AFI: IPv4:       10.10.2.0/24, tag 0x0000, metric: 16, next-hop: 10.10.3.1
+	  AFI: IPv4:       10.10.3.0/24, tag 0x0000, metric: 16, next-hop: self
+	  AFI: IPv4:       10.10.4.0/24, tag 0x0000, metric: 2, next-hop: self
+	  AFI: IPv4:       10.10.5.0/24, tag 0x0000, metric: 1, next-hop: self
+	  AFI: IPv4:       10.10.6.0/24, tag 0x0000, metric: 2, next-hop: self
+	  
+\end{Verbatim}
+
+С отключенным расщепленным горизонтом:
+\begin{Verbatim}
+IP (tos 0x0, ttl 1, id 0, offset 0, flags [DF], proto UDP (17), length 172) 10.10.3.2.520 > 224.0.0.9.520: 
+	RIPv2, Response, length: 144, routes: 7
+	  AFI: IPv4:         0.0.0.0/0 , tag 0x0000, metric: 2, next-hop: self
+	  AFI: IPv4:       10.10.1.0/24, tag 0x0000, metric: 2, next-hop: 10.10.3.1
+	  AFI: IPv4:       10.10.2.0/24, tag 0x0000, metric: 2, next-hop: 10.10.3.1
+	  AFI: IPv4:       10.10.3.0/24, tag 0x0000, metric: 1, next-hop: self
+	  AFI: IPv4:       10.10.4.0/24, tag 0x0000, metric: 2, next-hop: self
+	  AFI: IPv4:       10.10.5.0/24, tag 0x0000, metric: 1, next-hop: self
+	  AFI: IPv4:       10.10.6.0/24, tag 0x0000, metric: 2, next-hop: self	
+\end{Verbatim}
+
+
+
+\section{Имитация устранимой поломки в сети}
+
+Был выключен маршрутизатор r4.
+
+Вывод таблицы RIP непосредственно перед истечением таймера устаревания на маршрутизаторе r3.
+
+\begin{Verbatim}
+Codes: R - RIP, C - connected, S - Static, O - OSPF, B - BGP
+Sub-codes:
+      (n) - normal, (s) - static, (d) - default, (r) - redistribute,
+      (i) - interface
+
+     Network            Next Hop         Metric From            Tag Time
+R(n) 0.0.0.0/0          10.10.5.3             2 10.10.5.3         0 00:12
+R(n) 10.10.1.0/24       10.10.3.1             2 10.10.3.1         0 00:00
+R(n) 10.10.2.0/24       10.10.3.1             2 10.10.3.1         0 00:00
+C(i) 10.10.3.0/24       0.0.0.0               1 self              0
+R(n) 10.10.4.0/24       10.10.5.3             2 10.10.5.3         0 00:12
+C(i) 10.10.5.0/24       0.0.0.0               1 self              0
+R(n) 10.10.6.0/24       10.10.5.1             2 10.10.5.1         0 00:14
+\end{Verbatim}
+
+Перестроенная таблица на этом же маршрутизаторе
+
+\begin{Verbatim}
+Codes: R - RIP, C - connected, S - Static, O - OSPF, B - BGP
+Sub-codes:
+      (n) - normal, (s) - static, (d) - default, (r) - redistribute,
+      (i) - interface
+
+     Network            Next Hop         Metric From            Tag Time
+R(n) 0.0.0.0/0          10.10.5.3             2 10.10.5.3         0 00:19
+R(n) 10.10.1.0/24       10.10.5.3             3 10.10.5.3         0 00:19
+R(n) 10.10.2.0/24       10.10.5.3             3 10.10.5.3         0 00:19
+C(i) 10.10.3.0/24       0.0.0.0               1 self              0
+R(n) 10.10.4.0/24       10.10.5.3             2 10.10.5.3         0 00:19
+C(i) 10.10.5.0/24       0.0.0.0               1 self              0
+R(n) 10.10.6.0/24       10.10.5.1             2 10.10.5.1         0 00:11
+\end{Verbatim}
+
+
+Вывод \textbf{traceroute} от узла ws2 до wsp1 после того, как служба RIP перестроила таблицы маршрутизации.
+
+\begin{Verbatim}
+traceroute to 10.10.1.1 (10.10.1.1), 64 hops max, 40 byte packets
+ 1  10.10.6.2 (10.10.6.2)  11 ms  1 ms  1 ms
+ 2  10.10.5.3 (10.10.5.3)  12 ms  1 ms  1 ms
+ 3  10.10.4.1 (10.10.4.1)  13 ms  2 ms  1 ms
+ 4  10.10.1.1 (10.10.1.1)  13 ms  2 ms  1 ms
+\end{Verbatim}
+
+\section{Имитация неустранимой поломки в сети}
+
+Был отключен маршрутизатор r1.
+\begin{Verbatim}
+
+     Network            Next Hop         Metric From            Tag Time
+R(n) 0.0.0.0/0          10.10.5.3             2 10.10.5.3         0 00:12
+R(n) 10.10.1.0/24       10.10.5.3            16 10.10.5.3         0 00:02
+R(n) 10.10.2.0/24       10.10.5.3            16 10.10.5.3         0 00:00
+C(i) 10.10.3.0/24       0.0.0.0               1 self              0
+R(n) 10.10.4.0/24       10.10.5.3             2 10.10.5.3         0 00:12
+C(i) 10.10.5.0/24       0.0.0.0               1 self              0
+R(n) 10.10.6.0/24       10.10.5.1             2 10.10.5.1         0 00:11
+\end{Verbatim}
+
+\begin{Verbatim}
+     Network            Next Hop         Metric From            Tag Time
+R(n) 0.0.0.0/0          10.10.5.3             2 10.10.5.3         0 00:19
+C(i) 10.10.3.0/24       0.0.0.0               1 self              0
+R(n) 10.10.4.0/24       10.10.5.3             2 10.10.5.3         0 00:19
+C(i) 10.10.5.0/24       0.0.0.0               1 self              0
+R(n) 10.10.6.0/24       10.10.5.1             2 10.10.5.1         0 00:18
+\end{Verbatim}
+
+
+\end{document}

@@ -1,0 +1,86 @@
+\documentclass{article}
+\usepackage[x11names, rgb]{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usetikzlibrary{snakes,arrows,shapes}
+\usepackage{amsmath}
+%
+%
+
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{0pt}%
+
+%
+
+\begin{document}
+\pagestyle{empty}
+%
+%
+%
+
+\enlargethispage{100cm}
+% Start of code
+\begin{tikzpicture}[>=latex',line join=bevel,]
+%%
+\node (r4) at (632.57bp,321.08bp) [draw=blue,diamond] {r4};
+  \node (r5) at (221.33bp,469.4bp) [draw=blue,diamond] {r5};
+  \node (wsp1) at (738.06bp,124.89bp) [draw=green,diamond] {wsp1};
+  \node (tap) at (192.44bp,167.87bp) [draw=brown,ellipse] {172.16.0.0/16};
+  \node (r1) at (517.65bp,144.18bp) [draw=blue,diamond] {r1};
+  \node (r2) at (289.63bp,243.39bp) [draw=blue,diamond] {r2};
+  \node (r3) at (417.98bp,426bp) [draw=blue,diamond] {r3};
+  \node (lan5) at (298.9bp,374.76bp) [draw=brown,ellipse] {10.10.5.0/24};
+  \node (lan6) at (159.7bp,566.5bp) [draw=brown,ellipse] {10.10.6.0/24};
+  \node (Host) at (108.08bp,89.035bp) [draw=blue,diamond] {Host};
+  \node (lan4) at (393.89bp,166.89bp) [draw=brown,ellipse] {10.10.4.0/24};
+  \node (lan3) at (543.5bp,413.46bp) [draw=brown,ellipse] {10.10.3.0/24};
+  \node (lan2) at (570.78bp,238.57bp) [draw=brown,ellipse] {10.10.2.0/24};
+  \node (lan1) at (640.21bp,186.56bp) [draw=brown,ellipse] {10.10.1.0/24};
+  \node (Internet) at (29.5bp,9.5bp) [draw=brown,ellipse] {Internet};
+  \node (ws2) at (90.512bp,653.79bp) [draw=green,diamond] {ws2};
+  \draw [gray,] (Host) ..controls (82.33bp,62.973bp) and (53.284bp,33.574bp)  .. (Internet);
+  \draw [gray,] (r2) ..controls (315.77bp,224.21bp) and (356.33bp,194.45bp)  .. (lan4);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (300.38bp,216.62bp) node {eth0: 10.10.4.2};
+  \draw [gray,] (r2) ..controls (292.4bp,282.65bp) and (296.31bp,338.06bp)  .. (lan5);
+  \draw (256.32bp,318.79bp) node {eth1: 10.10.5.3};
+  \draw [gray,] (r4) ..controls (615.09bp,297.74bp) and (592.2bp,267.18bp)  .. (lan2);
+  \draw (564.89bp,290.45bp) node {eth0: 10.10.2.1};
+  \draw [gray,] (wsp1) ..controls (707.02bp,144.45bp) and (676.77bp,163.52bp)  .. (lan1);
+  \draw (653.06bp,163.51bp) node {eth0: 10.10.1.1};
+  \draw [gray,] (ws2) ..controls (111.68bp,627.08bp) and (136.8bp,595.39bp)  .. (lan6);
+  \draw (86.563bp,619.83bp) node {eth0: 10.10.6.1};
+  \draw [gray,] (r2) ..controls (264.91bp,224.18bp) and (227.99bp,195.5bp)  .. (tap);
+  \draw (201.3bp,217.17bp) node {eth2: 172.16.0.20};
+  \draw [gray,] (r4) ..controls (609.74bp,344.76bp) and (573.27bp,382.59bp)  .. (lan3);
+  \draw (552.01bp,374.23bp) node {eth1: 10.10.3.1};
+  \draw [gray,] (r5) ..controls (204.5bp,495.92bp) and (179.79bp,534.85bp)  .. (lan6);
+  \draw (153.46bp,525.46bp) node {eth1: 10.10.6.2};
+  \draw [gray,] (Host) ..controls (134.37bp,113.6bp) and (163.34bp,140.68bp)  .. (tap);
+  \draw (111.34bp,137.6bp) node {tap: 172.16.0.1};
+  \draw [gray,] (r3) ..controls (389.04bp,413.55bp) and (348.41bp,396.06bp)  .. (lan5);
+  \draw (327.13bp,412.26bp) node {eth1: 10.10.5.2};
+  \draw [gray,] (r1) ..controls (487.84bp,149.65bp) and (455.12bp,155.65bp)  .. (lan4);
+  \draw (429.48bp,144.38bp) node {eth1: 10.10.4.1};
+  \draw [gray,] (r5) ..controls (241.65bp,444.61bp) and (273.19bp,406.13bp)  .. (lan5);
+  \draw (220.57bp,432.96bp) node {eth0: 10.10.5.1};
+  \draw [gray,] (r1) ..controls (532.65bp,170.83bp) and (553.31bp,207.53bp)  .. (lan2);
+  \draw (505.48bp,199.07bp) node {eth0: 10.10.2.2};
+  \draw [gray,] (r4) ..controls (634.86bp,280.74bp) and (638.11bp,223.57bp)  .. (lan1);
+  \draw (598.44bp,261.9bp) node {eth2: 10.10.1.2};
+  \draw [gray,] (r3) ..controls (448.43bp,422.96bp) and (478.5bp,419.95bp)  .. (lan3);
+  \draw (505.32bp,430.07bp) node {eth0: 10.10.3.2};
+  \draw [gray,] (r1) ..controls (547.39bp,154.46bp) and (586.7bp,168.06bp)  .. (lan1);
+  \draw (532.9bp,171.59bp) node {eth2: 10.10.1.2};
+%
+\end{tikzpicture}
+% End of code
+
+%
+\end{document}
+%
+
+
+
